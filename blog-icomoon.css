@@ -1,0 +1,108 @@
+@font-face {
+    font-family: "icomoon-blog";
+    src: url("/blog/css/icons/fonts/icomoon.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block}
+.icon-survey:before {
+    font-family: "icomoon-blog";
+    content: "e919"}
+.icon-x:before {
+    font-family: "icomoon-blog";
+    content: "e918"}
+.icon-instagram:before {
+    font-family: "icomoon-blog";
+    content: "e916";
+    color: #fff}
+.icon-youtube:before {
+    font-family: "icomoon-blog";
+    content: "e917";
+    color: #fff}
+.icon-right-arrow:before {
+    font-family: "icomoon-blog";
+    content: "e900";
+}
+.icon-Book:before {
+    font-family: "icomoon-blog";
+    content: "e901";
+}
+.icon-Building:before {
+    font-family: "icomoon-blog";
+    content: "e902";
+}
+.icon-Calendar:before {
+    font-family: "icomoon-blog";
+    content: "e903";
+}
+.icon-Chart:before {
+    font-family: "icomoon-blog";
+    content: "e904";
+}
+.icon-Close:before {
+    font-family: "icomoon-blog";
+    content: "\e905"}
+.icon-Copy:before {
+    font-family: "icomoon-blog";
+    content: "e906";
+}
+.icon-Facebook:before {
+    font-family: "icomoon-blog";
+    content: "e907";
+}
+.icon-Laptop:before {
+    font-family: "icomoon-blog";
+    content: "e908";
+}
+.icon-Left-Arrow:before {
+    font-family: "icomoon-blog";
+    content: "e909";
+}
+.icon-Linkedin:before {
+    font-family: "icomoon-blog";
+    content: "e90A";
+}
+.icon-Menu:before {
+    font-family: "icomoon-blog";
+    content: "e90B";
+}
+.icon-Pencil:before {
+    font-family: "icomoon-blog";
+    content: "e90C";
+}
+.icon-People:before {
+    font-family: "icomoon-blog";
+    content: "e90D";
+}
+.icon-Search:before {
+    font-family: "icomoon-blog";
+    content: "\e90e";
+}
+.icon-Share:before {
+    font-family: "icomoon-blog";
+    content: "e90F";
+}
+.icon-Time:before {
+    font-family: "icomoon-blog";
+    content: "e910";
+}
+.icon-Tree:before {
+    font-family: "icomoon-blog";
+    content: "e911";
+}
+.icon-Twitter:before {
+    font-family: "icomoon-blog";
+    content: "e912";
+}
+.icon-Up-Arrow:before {
+    font-family: "icomoon-blog";
+    content: "e913";
+}
+.icon-Video:before {
+    font-family: "icomoon-blog";
+    content: "e914";
+}
+.icon-Whatsapp:before {
+    font-family: "icomoon-blog";
+    content: "e915";
+}
+ 

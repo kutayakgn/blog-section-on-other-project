@@ -1,0 +1,19 @@
+@using YkbYapikredi.Web.Helpers
+@model YkbYapikredi.Web.Models.BlogLayoutViewModel
+
+<header class="blog-header">
+    <button type="button" class="blog-header__menu" data-mobile-nav-toggle aria-expanded="false" aria-controls="blog-navigation" aria-label="Blog menüsünü aç">
+        <span aria-hidden="true"></span>
+    </button>
+    <a class="blog-header__logo" href="/blog">
+        <img src="~/assets/images/blog/ykb-blog-logo.png" alt="Yapı Kredi Blog" />
+    </a>
+    <button type="button" class="blog-header__search-toggle" data-search-toggle aria-expanded="false" aria-controls="blog-search-form" aria-label="Aramayı aç">
+        @IconRenderer.Render("icon-Search")
+    </button>
+    <form id="blog-search-form" class="blog-search" method="get" action="@Model.BaseUrl" role="search">
+        <button type="button" class="blog-search__close" data-search-close aria-label="Aramayı kapat"><span aria-hidden="true">×</span></button>
+        <input type="search" name="q" value="@Model.Query" class="blog-search__input" placeholder="Blogda arayın" minlength="3" maxlength="50" aria-label="Blogda ara" />
+        <button type="submit" class="blog-search__button" aria-label="Ara">@IconRenderer.Render("icon-Search")</button>
+    </form>
+</header>

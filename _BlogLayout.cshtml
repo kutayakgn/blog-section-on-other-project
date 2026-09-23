@@ -1,0 +1,14 @@
+@model YkbYapikredi.Web.Models.BlogLayoutViewModel
+@{
+    var currentCulture = ViewData["Culture"]?.ToString() ?? "tr-TR";
+    var languageTag = currentCulture.Split('-')[0].ToLowerInvariant();
+}<!DOCTYPE html><html dir="ltr" lang="@currentCulture" class="lang-@languageTag"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>@ViewData["Title"] - Yapı Kredi Blog</title><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@@400;500;600;700&display=swap" /><link rel="stylesheet" href="~/css/blog.min.css" asp-append-version="true" />    @await RenderSectionAsync("Styles", required: false)</head><body class="blog blog--@Model.AccentColor"><div class="blog-layout">        @await Html.PartialAsync("~/Views/Blog/Partials/_BlogHeader.cshtml", Model)
+        @await Html.PartialAsync("~/Views/Blog/Partials/_BlogNav.cshtml", Model.Nav)
+        <button type="button" class="blog-nav-backdrop" data-mobile-nav-dismiss aria-label="Blog menüsünü kapat"></button>
+
+        <main class="blog-main">            @RenderBody()
+        </main>
+        @await Html.PartialAsync("~/Views/Blog/Partials/_BlogFooter.cshtml")
+    </div><script src="~/js/blog.min.js" asp-append-version="true"></script>    @await RenderSectionAsync("Scripts", required: false)</body></html>
+ 

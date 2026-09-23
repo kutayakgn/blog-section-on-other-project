@@ -1,0 +1,40 @@
+@model YkbYapikredi.Web.Models.BlogPageViewModel
+
+@functions {
+    private string PageUrl(int number) => Model.PageUrl(number);
+}
+
+@if (Model.TotalPages > 1)
+{
+    var firstVisiblePage = Math.Max(1, Model.PageNumber - 2);
+    var lastVisiblePage = Math.Min(Model.TotalPages, firstVisiblePage + 4);
+    firstVisiblePage = Math.Max(1, lastVisiblePage - 4);
+
+    <nav class="blog-pager" aria-label="Sayfalama">
+        @if (Model.PageNumber > 1)
+        {
+            <a class="blog-pager__step" href="@PageUrl(1)" aria-label="İlk sayfa">&lt;&lt;</a>
+            <a class="blog-pager__step" href="@PageUrl(Model.PageNumber - 1)" rel="prev" aria-label="Önceki sayfa">&lt;</a>
+        }
+        <ol class="blog-pager__list">
+            @for (var number = firstVisiblePage; number <= lastVisiblePage; number++)
+            {
+                <li>
+                    @if (number == Model.PageNumber)
+                    {
+                        <span class="blog-pager__page is-current" aria-current="page">@number</span>
+                    }
+                    else
+                    {
+                        <a class="blog-pager__page" href="@PageUrl(number)" aria-label="Sayfa @number">@number</a>
+                    }
+                </li>
+            }
+        </ol>
+        @if (Model.PageNumber < Model.TotalPages)
+        {
+            <a class="blog-pager__step" href="@PageUrl(Model.PageNumber + 1)" rel="next" aria-label="Sonraki sayfa">&gt;</a>
+            <a class="blog-pager__step" href="@PageUrl(Model.TotalPages)" aria-label="Son sayfa">&gt;&gt;</a>
+        }
+    </nav>
+}
