@@ -1,6 +1,6 @@
 .blog {
     --blog-nav-width: 263px;
-    --blog-nav-width-closed: 72px;
+    --blog-nav-width-closed: 60px;
     --blog-radius: 12px;
     --blog-ink: #1b1b1f;
     --blog-ink-soft: #6b7280;
@@ -86,6 +86,7 @@
 }
 .blog-sort__option {
     display: block;
+    box-sizing: border-box;
     width: 100%;
     padding: 9px 11px;
     border: 0;

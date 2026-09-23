@@ -6,9 +6,9 @@
 
 @if (Model.TotalPages > 1)
 {
-    var firstVisiblePage = Math.Max(1, Model.PageNumber - 2);
-    var lastVisiblePage = Math.Min(Model.TotalPages, firstVisiblePage + 4);
-    firstVisiblePage = Math.Max(1, lastVisiblePage - 4);
+    var firstVisiblePage = System.Math.Max(1, Model.PageNumber - 2);
+    var lastVisiblePage = System.Math.Min(Model.TotalPages, firstVisiblePage + 4);
+    firstVisiblePage = System.Math.Max(1, lastVisiblePage - 4);
 
     <nav class="blog-pager" aria-label="Sayfalama">
         @if (Model.PageNumber > 1)
