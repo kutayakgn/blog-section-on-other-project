@@ -24,7 +24,10 @@
         <details class="blog-sort">
             <summary class="blog-sort__toggle">
                 <span>@(Model.OldestFirst ? "Eskiden Yeniye" : "Yeniden Eskiye")</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" />
+                </svg>
             </summary>
             <div class="blog-sort__menu" role="menu">
                 @if (Model.OldestFirst)

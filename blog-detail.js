@@ -1,10 +1,12 @@
 /*
     Yazı sayfası: paylaşım menüsü ve yazı boyutu.
     Vanilla — jQuery ya da başka bağımlılık yok.
-*/(function () {
+*/
+(function () {
     "use strict";
 
-    /* ---------- Paylaşım ---------- */var share = document.querySelector("[data-share]");
+    /* ---------- Paylaşım ---------- */
+    var share = document.querySelector("[data-share]");
 
     if (share) {
         var toggle = share.querySelector(".blog-share__toggle");
@@ -15,9 +17,11 @@
                 var url = share.getAttribute("data-share-url");
                 var title = share.getAttribute("data-share-title");
 
-                // Destekleyen cihazda (çoğunlukla mobil) işletim sisteminin// kendi paylaşım ekranı açılır; liste hiç gösterilmez.if (navigator.share) {
+                // Destekleyen cihazda işletim sisteminin paylaşım ekranı açılır.
+                if (navigator.share) {
                     navigator.share({ title: title, url: url }).catch(function () {
-                        // Kullanıcı vazgeçti; yapılacak bir şey yok.                    });
+                        // Kullanıcı vazgeçti; yapılacak bir şey yok.
+                    });
                     return;
                 }
 
@@ -41,7 +45,8 @@
                     return;
                 }
 
-                // clipboard API yoksa (eski tarayıcı / güvensiz origin) geçici alan.var field = document.createElement("input");
+                // clipboard API yoksa (eski tarayıcı / güvensiz origin) geçici alan.
+                var field = document.createElement("input");
                 field.value = url;
                 document.body.appendChild(field);
                 field.select();
@@ -50,7 +55,8 @@
             });
         }
 
-        // Dışarı tıklayınca liste kapansın.document.addEventListener("click", function (event) {
+        // Dışarı tıklayınca liste kapansın.
+        document.addEventListener("click", function (event) {
             if (!share.contains(event.target)) {
                 share.classList.remove("is-open");
                 if (toggle) {
@@ -60,7 +66,8 @@
         });
     }
 
-    /* ---------- Yazı boyutu ---------- */var text = document.querySelector("[data-article-text]");
+    /* ---------- Yazı boyutu ---------- */
+    var text = document.querySelector("[data-article-text]");
     if (!text) {
         return;
     }
@@ -83,7 +90,8 @@
         try {
             localStorage.setItem(STORAGE_KEY, String(index));
         } catch (e) {
-            // localStorage kapalıysa tercih kalıcı olmaz; boyut yine değişir.        }
+            // localStorage kapalıysa tercih kalıcı olmaz; boyut yine değişir.
+        }
     }
 
     try {
@@ -111,4 +119,3 @@
         });
     }
 })();
- 

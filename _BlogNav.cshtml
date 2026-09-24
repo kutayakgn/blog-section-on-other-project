@@ -3,16 +3,26 @@
 
 <nav id="blog-navigation" class="blog-nav" aria-label="Blog kategorileri">
     <div class="blog-nav__inner">
-        <button type="button" class="blog-nav__toggle" data-desktop-nav-toggle aria-expanded="true" aria-controls="blog-navigation" aria-label="Menüyü daralt">
+        <button type="button"
+                class="blog-nav__toggle"
+                data-desktop-nav-toggle
+                aria-expanded="true"
+                aria-controls="blog-navigation"
+                aria-label="Menüyü daralt">
             <span aria-hidden="true"></span>
         </button>
+
         <ul class="blog-nav__list">
             @for (var index = 0; index < Model.Items.Count; index++)
             {
                 var item = Model.Items[index];
                 var isActive = Model.IsActive(item);
                 <li>
-                    <a href="@item.Url" class="blog-nav__link @(isActive ? "is-active" : null)" style="--blog-nav-color: var(--blog-@item.Color)" data-title="@item.Title" aria-current="@(isActive ? "page" : null)">
+                    <a href="@item.Url"
+                       class="blog-nav__link @(isActive ? "is-active" : null)"
+                       style="--blog-nav-color: var(--blog-@item.Color)"
+                       data-title="@item.Title"
+                       aria-current="@(isActive ? "page" : null)">
                         <span class="blog-nav__icon">
                             @if (!string.IsNullOrWhiteSpace(item.IconCssClass))
                             {
