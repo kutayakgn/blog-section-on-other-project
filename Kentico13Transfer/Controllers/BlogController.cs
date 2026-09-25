@@ -32,11 +32,13 @@ public sealed class BlogController : BaseController
     private readonly IPageUrlRetriever pageUrlRetriever;
 
     public BlogController(
+        IPageDataContextRetriever pageDataContextRetriever,
         IBlogNavigationService navigationService,
         IBlogArticleService articleService,
         ISiteSearchService siteSearch,
         IPageRetriever pageRetriever,
         IPageUrlRetriever pageUrlRetriever)
+        : base(pageDataContextRetriever)
     {
         this.navigationService = navigationService;
         this.articleService = articleService;
@@ -46,9 +48,9 @@ public sealed class BlogController : BaseController
     }
 
     public async Task<IActionResult> Index(
-        string? q,
-        string? sort,
-        int page = 1,
+        [FromQuery] string? q = null,
+        [FromQuery] string? sort = null,
+        [FromQuery] int page = 1,
         CancellationToken cancellationToken = default)
     {
         var currentPage = GetPage<TreeNode>();
@@ -61,8 +63,8 @@ public sealed class BlogController : BaseController
         var currentAliasPath = currentPage.NodeAliasPath;
         var isRoot = currentAliasPath.Equals(BlogRootPath, StringComparison.OrdinalIgnoreCase);
 
-        var term = (q ?? string.Empty).Trim();
-        var isSearch = term.Length >= 3;
+        var term = Trim(q);
+        var isSearch = term is { Length: >= 3 };
         var pageNumber = Math.Max(1, page);
         var oldestFirst = string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
 
@@ -80,7 +82,7 @@ public sealed class BlogController : BaseController
 
         if (isSearch)
         {
-            articlePage = await SearchAsync(term, pageNumber, cancellationToken);
+            articlePage = await SearchAsync(term!, pageNumber, cancellationToken);
         }
         else
         {
@@ -96,8 +98,9 @@ public sealed class BlogController : BaseController
         if (isRoot && !isSearch)
         {
             latest = await articleService.GetLatestAsync(
-                Culture,
+                BlogRootPath,
                 LatestCount,
+                Culture,
                 cancellationToken);
         }
 
@@ -147,9 +150,9 @@ public sealed class BlogController : BaseController
         // /blog/gelecek/bilim ise yalnızca Bilim dalındaki yazıları getirir.
         var result = await articleService.GetPageAsync(
             aliasPath,
-            Culture,
             pageNumber,
             PageSize,
+            Culture,
             oldestFirst,
             cancellationToken);
 
@@ -166,37 +169,28 @@ public sealed class BlogController : BaseController
         int pageNumber,
         CancellationToken cancellationToken)
     {
-        var safeTerm = term.Length <= MaxQueryLength
-            ? term
-            : term[..MaxQueryLength];
-
         // Dış servis en fazla 100 kayıt döndürüyor. Sıra alaka puanıdır ve
         // Article servisinden dönen DTO'lar aynı alias-path sırasına dizilir.
         var search = await siteSearch.SearchAsync(
-            safeTerm,
-            SearchScope.Blog,
-            maxResults: 100,
+            new SiteSearchQuery(term, 1, Culture, 100, SearchScope.Blog),
             cancellationToken);
 
         if (search.Hits.Count == 0)
         {
-            return new ArticlePageResult([], 1, 1, 0, search.IsPartial);
+            return new ArticlePageResult([], 1, 1, 0, search.IsPartialCount);
         }
 
         var aliasPaths = search.Hits
-            .Select(hit => "/" + hit.Url.Trim('/'))
+            .Select(hit => ToAliasPath(hit.Url))
+            .Where(path => path is not null)
+            .Select(path => path!)
             .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+            .ToList();
 
-        var byPath = await articleService.GetByAliasPathsAsync(
+        var ordered = await articleService.GetByAliasPathsAsync(
             aliasPaths,
             Culture,
             cancellationToken);
-
-        var ordered = aliasPaths
-            .Where(path => byPath.ContainsKey(path))
-            .Select(path => byPath[path])
-            .ToList();
 
         var totalCount = ordered.Count;
         var totalPages = Math.Max(1, (int)Math.Ceiling(totalCount / (double)PageSize));
@@ -211,7 +205,31 @@ public sealed class BlogController : BaseController
             safePage,
             totalPages,
             totalCount,
-            search.IsPartial);
+            search.IsPartialCount);
+    }
+
+    private static string? ToAliasPath(string url)
+    {
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+        {
+            return null;
+        }
+
+        var path = uri.AbsolutePath.TrimEnd('/');
+
+        return string.IsNullOrEmpty(path) ? null : path;
+    }
+
+    private static string? Trim(string? query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return null;
+        }
+
+        var term = query.Trim();
+
+        return term.Length > MaxQueryLength ? term[..MaxQueryLength] : term;
     }
 
     private async Task<CategoryContext?> GetCategoryContextAsync(
