@@ -3,13 +3,20 @@ namespace YkbYapikredi.Web.Services;
 public sealed class AssetBundleService : IAssetBundleService
 {
     private const string CompatibilityCss = """
+        .blog-pager__page {
+            box-sizing: border-box;
+            width: 32px;
+            min-width: 32px;
+            height: 32px;
+            padding: 0;
+        }
+
         @media (min-width: 992px) {
             .blog {
                 --blog-desktop-content-right: 238px;
             }
 
-            .blog-layout,
-            .blog--nav-closed .blog-layout {
+            .blog-layout {
                 grid-template-columns: var(--blog-nav-width) minmax(0, 1fr);
                 grid-template-areas:
                     "nav main"
@@ -17,21 +24,35 @@ public sealed class AssetBundleService : IAssetBundleService
                 column-gap: 56px;
             }
 
+            .blog--nav-closed .blog-layout {
+                grid-template-columns: var(--blog-nav-width-closed) minmax(0, 1fr);
+            }
+
             .blog-search {
                 max-width: none;
                 margin-right: calc(var(--blog-desktop-content-right) - 35px);
             }
 
-            .blog-nav__link,
-            .blog--nav-closed .blog-nav__link {
+            .blog-nav__link {
                 justify-content: flex-start;
-                padding-right: 16px;
-                padding-left: 20px;
+                gap: 24px;
+                padding-right: 24px;
+                padding-left: 24px;
             }
 
-            .blog-nav,
-            .blog--nav-closed .blog-nav {
+            .blog--nav-closed .blog-nav__link {
+                justify-content: center;
+                gap: 0;
+                padding-right: 24px;
+                padding-left: 24px;
+            }
+
+            .blog-nav {
                 width: var(--blog-nav-width);
+            }
+
+            .blog--nav-closed .blog-nav {
+                width: var(--blog-nav-width-closed);
             }
 
             .blog-nav__inner {

@@ -18,7 +18,7 @@
 .blog-pager__page, .blog-pager__step {
     display: inline-grid;
     place-items: center;
-    min-width: 32px;
+    width: 32px;
     height: 32px;
     padding: 0 7px;
     border: 0;
