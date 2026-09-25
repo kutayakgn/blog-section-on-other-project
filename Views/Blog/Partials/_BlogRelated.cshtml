@@ -1,0 +1,44 @@
+@model YkbYapikredi.Web.Models.BlogArticleViewModel
+
+@if (Model.Related.Count > 0)
+{
+    <aside class="blog-related" aria-labelledby="blog-related-title">
+        <h2 class="blog-related__title" id="blog-related-title">İlginizi Çekebilir</h2>
+
+        <ul class="blog-related__list">
+            @foreach (var item in Model.Related)
+            {
+                var category = Model.GetCategory(item);
+                var color = category?.Color ?? "blue";
+                var imageUrl = string.IsNullOrWhiteSpace(item.ImageUrl) ? null : Url.Content(item.ImageUrl);
+
+                <li>
+                    <a class="blog-related__item" href="@item.Url" style="--blog-card-color: var(--blog-@color)">
+                        <span class="blog-related__thumb">
+                            @if (imageUrl is not null)
+                            {
+                                <img src="@imageUrl" alt="@item.Title" loading="lazy" />
+                            }
+                        </span>
+
+                        <span class="blog-related__body">
+                            <span class="blog-related__name">@item.Title</span>
+                            <span class="blog-related__meta">
+                                @item.PublishDate.ToString("dd MMMM yyyy")
+                                @if (item.ReadingMinutes > 0)
+                                {
+                                    <text> · @item.ReadingMinutes dk</text>
+                                }
+                            </span>
+
+                            @if (category is not null)
+                            {
+                                <span class="blog-related__category">@category.Title</span>
+                            }
+                        </span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </aside>
+}

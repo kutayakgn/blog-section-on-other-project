@@ -1,0 +1,82 @@
+@model YkbYapikredi.Web.Models.BlogPageViewModel
+@{
+    Layout = "_BlogLayout";
+    ViewData["Title"] = Model.Title;
+}
+
+@await Html.PartialAsync("~/Views/Blog/Partials/_BlogSlider.cshtml", Model)
+
+<div class="blog-section-head" id="yazilar">
+    <div class="d-flex gap-4 align-items-center">
+        <h1 class="blog-page-title">@(Model.IsSearch ? Model.Title : "Tüm Yazılar")</h1>
+
+        @if (Model.TotalCount > 0)
+        {
+            <p class="blog-page-count">@Model.TotalCount yazı</p>
+        }
+
+        @if (Model.IsPartialCount)
+        {
+            <p class="blog-page-note">En alakalı ilk 100 sonuç tarandı.</p>
+        }
+    </div>
+
+    @if (!Model.IsSearch && Model.TotalCount > 1)
+    {
+        <details class="blog-sort">
+            <summary class="blog-sort__toggle">
+                <span>@(Model.OldestFirst ? "Eskiden Yeniye" : "Yeniden Eskiye")</span>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2.2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" />
+                </svg>
+            </summary>
+
+            <div class="blog-sort__menu" role="menu">
+                @if (Model.OldestFirst)
+                {
+                    <a class="blog-sort__option" href="@Model.SortToggleUrl" role="menuitem">Yeniden Eskiye</a>
+                    <span class="blog-sort__option is-selected" role="menuitem" aria-current="true">Eskiden Yeniye</span>
+                }
+                else
+                {
+                    <span class="blog-sort__option is-selected" role="menuitem" aria-current="true">Yeniden Eskiye</span>
+                    <a class="blog-sort__option" href="@Model.SortToggleUrl" role="menuitem">Eskiden Yeniye</a>
+                }
+
+                <button type="button" class="blog-sort__option" role="menuitem">Popüler Yazılar</button>
+            </div>
+        </details>
+    }
+</div>
+
+@if (Model.TotalCount > 0)
+{
+    <ul class="blog-cards">
+        @foreach (var article in Model.Articles)
+        {
+            @await Html.PartialAsync(
+                "~/Views/Blog/Partials/_BlogCard.cshtml",
+                new YkbYapikredi.Web.Models.BlogCardViewModel
+                {
+                    Article = article,
+                    Category = Model.GetCategory(article),
+                })
+        }
+    </ul>
+
+    @await Html.PartialAsync("~/Views/Blog/Partials/_BlogPager.cshtml", Model)
+}
+else if (Model.IsSearch)
+{
+    <div class="blog-empty">Aramanla eşleşen yazı bulunamadı.</div>
+}
+else
+{
+    <div class="blog-empty">Bu kategoride henüz yazı yok.</div>
+}

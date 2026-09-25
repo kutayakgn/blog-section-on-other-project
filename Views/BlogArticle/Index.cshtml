@@ -1,0 +1,126 @@
+@using YkbYapikredi.Application.Blog
+@model YkbYapikredi.Web.Models.BlogArticleViewModel
+@{
+    Layout = "~/Views/Blog/_BlogLayout.cshtml";
+
+    var coverImageUrl = string.IsNullOrWhiteSpace(Model.CoverImageUrl)
+        ? null
+        : Url.Content(Model.CoverImageUrl);
+}
+
+<div class="blog-detail-layout">
+    <article class="blog-detail">
+        @if (Model.Breadcrumb.Count > 0)
+        {
+            <nav class="blog-crumbs" aria-label="Kırıntı yolu">
+                <ol>
+                    @foreach (var crumb in Model.Breadcrumb)
+                    {
+                        <li>
+                            @if (crumb.Url is not null)
+                            {
+                                <a href="@crumb.Url">@crumb.Title</a>
+                            }
+                            else
+                            {
+                                <span>@crumb.Title</span>
+                            }
+                        </li>
+                    }
+
+                    <li><span aria-current="page">@Model.Title</span></li>
+                </ol>
+            </nav>
+        }
+
+        <h1 class="blog-detail__title">@Model.Title</h1>
+
+        @if (Model.Embed is not null)
+        {
+            <div class="blog-detail__cover blog-detail__cover--embed @(Model.Embed.FixedHeight is null ? "is-ratio" : null)">
+                <iframe src="@Model.Embed.Url"
+                        title="@Model.Embed.Title"
+                        height="@(Model.Embed.FixedHeight?.ToString() ?? "100%")"
+                        loading="lazy"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        }
+        else if (coverImageUrl is not null)
+        {
+            <div class="blog-detail__cover">
+                <img src="@coverImageUrl" alt="@Model.Title" />
+            </div>
+        }
+
+        <div class="blog-detail__bar">
+            <div class="blog-detail__meta">
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                        <path d="M8 3v4M16 3v4M3 11h18" />
+                    </svg>
+                    @Model.PublishDate.ToString("dd MMMM yyyy")
+                </span>
+
+                @if (Model.ReadingMinutes > 0)
+                {
+                    <span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 7v5l3 2" />
+                        </svg>
+                        @Model.ReadingMinutes dk
+                    </span>
+                }
+
+                @if (Model.Category is not null)
+                {
+                    <a class="blog-detail__category"
+                       href="@Model.Category.Url"
+                       style="--blog-card-color: var(--blog-@Model.Category.Color)">@Model.Category.Title</a>
+                }
+            </div>
+
+            <div class="blog-detail__tools">
+                <div class="blog-fontsize" role="group" aria-label="Yazı boyutu">
+                    <button type="button" data-font-smaller aria-label="Yazıyı küçült">A</button>
+                    <button type="button" data-font-larger aria-label="Yazıyı büyüt">A</button>
+                </div>
+
+                @await Html.PartialAsync("~/Views/Blog/Partials/_BlogShare.cshtml", Model)
+            </div>
+        </div>
+
+        <div class="blog-detail__text" data-article-text>
+            @Html.Raw(Model.Content)
+        </div>
+    </article>
+
+    @await Html.PartialAsync("~/Views/Blog/Partials/_BlogRelated.cshtml", Model)
+</div>
+
+@section Scripts {
+    @* Arama motorlarına yazının yapılandırılmış verisi. *@
+    <script type="application/ld+json">
+        @Html.Raw(System.Text.Json.JsonSerializer.Serialize(new
+        {
+            context = "https://schema.org",
+            type = "BlogPosting",
+            headline = Model.Title,
+            description = Model.Summary,
+            image = Model.CoverImageUrl is null
+                ? null
+                : $"{Context.Request.Scheme}://{Context.Request.Host}{Url.Content(Model.CoverImageUrl)}",
+            datePublished = Model.PublishDate.ToString("yyyy-MM-dd"),
+            mainEntityOfPage = Model.AbsoluteUrl,
+            publisher = new { type = "Organization", name = "Yapı Kredi" },
+        }, new System.Text.Json.JsonSerializerOptions
+        {
+            // schema.org "@context"/"@type" istiyor; C# property adı @ ile başlayamadığı
+            // için isimler serileştirmeden sonra düzeltiliyor.
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        }).Replace("\"context\":", "\"@context\":").Replace("\"type\":", "\"@type\":"))
+    </script>
+}

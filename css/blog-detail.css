@@ -1,0 +1,448 @@
+/*
+    Yazı detay sayfası.
+    En kritik bölüm .blog-detail__text: içine WYSIWYG'den ne gelirse gelsin
+    (paragraf, ara başlık, liste, metin arası görsel, alıntı, tablo, gömülü içerik)
+    tasarımın bozulmaması buradaki descendant kurallarına bağlı.
+*/
+/*
+    İki sütun: yazı + sağda "İlginizi Çekebilir" rayı.
+    Canlı sitede yazı alanı calc(100vw - 615px) genişliğinde, ilgili yazılar da
+    ~445px'lik sağ rayda. Sabit piksel yerine ızgara kullanıyoruz: ray sabit,
+    yazı kalan alanı alıyor — dar ekranda ray alta iniyor.
+*/
+.blog-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 48px;
+    align-items: start;
+}
+.blog-detail {
+    /* Genişlik ızgaradan geliyor; ayrıca kısıtlamıyoruz. */
+    min-width: 0;
+}
+@media (max-width: 1279px) {
+    .blog-detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 40px;
+    }
+}
+/* Kırıntı yolu */
+.blog-crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    font-size: 13.5px;
+    color: var(--blog-ink-soft);
+}
+.blog-crumbs li + li::before {
+    content: "›";
+    margin-right: 8px;
+    color: #b6bcc5;
+}
+.blog-crumbs a {
+    color: var(--blog-ink-soft);
+    text-decoration: none;
+}
+    .blog-crumbs a:hover {
+        color: var(--blog-accent);
+        text-decoration: underline;
+    }
+.blog-detail__title {
+    margin: 0 0 18px;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -.6px;
+}
+.blog-detail__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--blog-line);
+}
+.blog-detail__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: var(--blog-ink-soft);
+    font-size: 13.5px;
+}
+    .blog-detail__meta > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .blog-detail__meta svg {
+        width: 15px;
+        height: 15px;
+    }
+.blog-detail__category {
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: var(--blog-card-color, var(--blog-accent));
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.blog-detail__tools {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+/* Yazı boyutu A / A */
+.blog-fontsize {
+    display: inline-flex;
+    align-items: baseline;
+    overflow: hidden;
+    border: 1px solid var(--blog-line);
+    border-radius: 8px;
+    background: var(--blog-surface);
+}
+    .blog-fontsize button {
+        padding: 6px 12px;
+        border: 0;
+        background: transparent;
+        color: var(--blog-ink);
+        font-family: inherit;
+        cursor: pointer;
+        line-height: 1;
+    }
+        .blog-fontsize button:first-child {
+            font-size: 13px;
+        }
+        .blog-fontsize button:last-child {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .blog-fontsize button:hover {
+            background: rgba(19, 102, 178, .08);
+            color: var(--blog-accent);
+        }
+/* Paylaş */
+.blog-share {
+    position: relative;
+}
+.blog-share__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border: 1px solid var(--blog-line);
+    border-radius: 8px;
+    background: var(--blog-surface);
+    color: var(--blog-ink);
+    font: inherit;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+    .blog-share__toggle:hover {
+        border-color: var(--blog-accent);
+        color: var(--blog-accent);
+    }
+    .blog-share__toggle svg {
+        width: 15px;
+        height: 15px;
+    }
+.blog-share__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    min-width: 190px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    border: 1px solid var(--blog-line);
+    border-radius: 10px;
+    background: var(--blog-surface);
+    box-shadow: 0 10px 26px rgba(15, 30, 50, .14);
+    /* Menü JS ile açılır; kapalıyken erişilebilirlik ağacından da çıkmalı. */
+    display: none;
+}
+.blog-share.is-open .blog-share__list {
+    display: block;
+}
+.blog-share__list a,
+.blog-share__list button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--blog-ink);
+    font: inherit;
+    font-size: 13.5px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+    .blog-share__list a:hover,
+    .blog-share__list button:hover {
+        background: rgba(19, 102, 178, .08);
+        color: var(--blog-accent);
+    }
+/* Kapak: görsel veya gömülü içerik */
+.blog-detail__cover {
+    margin-bottom: 28px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #e8eef4;
+}
+    .blog-detail__cover img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .blog-detail__cover iframe {
+        display: block;
+        width: 100%;
+        border: 0;
+    }
+/*
+    YouTube 16:9 orana göre ölçeklenir. Canlı sitede sabit height attribute'u
+    üstüne JS ile !important yazılıyordu; aspect-ratio bunu JS'siz çözüyor.
+    Spotify sabit yükseklik istediği için bu sınıfı almaz.
+*/
+.blog-detail__cover--embed.is-ratio {
+    aspect-ratio: 16 / 9;
+}
+    .blog-detail__cover--embed.is-ratio iframe {
+        height: 100%;
+    }
+/* ---------- Serbest gövde ---------- */
+.blog-detail__text {
+    font-size: 16.5px;
+    line-height: 1.78;
+    color: #23272e;
+}
+    /* Yazı boyutu düğmeleri bu iki sınıfı ekler. */
+    .blog-detail__text.is-size-sm {
+        font-size: 15px;
+    }
+    .blog-detail__text.is-size-lg {
+        font-size: 19px;
+    }
+    .blog-detail__text p {
+        margin: 0 0 18px;
+    }
+    .blog-detail__text h2,
+    .blog-detail__text h3,
+    .blog-detail__text h4 {
+        margin: 34px 0 12px;
+        line-height: 1.3;
+        letter-spacing: -.3px;
+        /* Editör <h2><strong> yazıyor; strong fazladan kalınlık katmasın. */
+        font-weight: 700;
+    }
+    .blog-detail__text h2 {
+        font-size: 1.32em;
+    }
+    .blog-detail__text h3 {
+        font-size: 1.15em;
+    }
+    .blog-detail__text h4 {
+        font-size: 1.05em;
+    }
+        .blog-detail__text h2 strong,
+        .blog-detail__text h3 strong,
+        .blog-detail__text h4 strong {
+            font-weight: inherit;
+        }
+    .blog-detail__text ul,
+    .blog-detail__text ol {
+        margin: 0 0 18px;
+        padding-left: 4px;
+        list-style: none;
+    }
+    .blog-detail__text li {
+        position: relative;
+        margin-bottom: 10px;
+        padding-left: 22px;
+    }
+    .blog-detail__text ul > li::before {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: .62em;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--blog-accent);
+    }
+    .blog-detail__text ol {
+        counter-reset: blog-list;
+    }
+        .blog-detail__text ol > li {
+            counter-increment: blog-list;
+        }
+            .blog-detail__text ol > li::before {
+                content: counter(blog-list) ".";
+                position: absolute;
+                left: 0;
+                color: var(--blog-accent);
+                font-weight: 700;
+            }
+    .blog-detail__text a {
+        color: var(--blog-accent);
+        text-decoration: underline;
+    }
+    .blog-detail__text blockquote,
+    .blog-detail__text .quotation {
+        margin: 26px 0;
+        padding: 18px 22px;
+        border-left: 4px solid var(--blog-accent);
+        border-radius: 0 10px 10px 0;
+        background: rgba(19, 102, 178, .05);
+        font-size: 1.05em;
+    }
+        .blog-detail__text blockquote p:last-child,
+        .blog-detail__text .quotation q:last-child {
+            margin-bottom: 0;
+        }
+    /* Gömülü içerik ve tablo sayfayı yatay kaydırmasın. */
+    .blog-detail__text iframe,
+    .blog-detail__text video {
+        display: block;
+        max-width: 100%;
+        margin: 24px auto;
+        border: 0;
+        border-radius: 10px;
+    }
+    .blog-detail__text table {
+        display: block;
+        width: 100%;
+        margin: 24px 0;
+        overflow-x: auto;
+        border-collapse: collapse;
+        font-size: .95em;
+    }
+    .blog-detail__text th,
+    .blog-detail__text td {
+        padding: 10px 14px;
+        border: 1px solid var(--blog-line);
+        text-align: left;
+    }
+    .blog-detail__text th {
+        background: rgba(19, 102, 178, .06);
+        font-weight: 600;
+    }
+/* ---------- İlginizi Çekebilir (sağ ray) ---------- */
+.blog-related {
+    /* Uzun yazılarda ray ekranda kalsın. */
+    position: sticky;
+    top: 24px;
+}
+.blog-related__title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.2px;
+}
+    .blog-related__title::after {
+        content: "";
+        display: block;
+        width: 34px;
+        height: 3px;
+        margin-top: 8px;
+        border-radius: 2px;
+        background: var(--blog-accent);
+    }
+.blog-related__list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.blog-related__item {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid var(--blog-line);
+    border-radius: 12px;
+    background: var(--blog-surface);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+    .blog-related__item:hover {
+        border-color: var(--blog-card-color, var(--blog-accent));
+        box-shadow: 0 6px 16px rgba(15, 30, 50, .08);
+    }
+.blog-related__thumb {
+    flex: 0 0 40%;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Görseli olmayan yazıda kategori renginde düz alan. */
+    background: var(--blog-card-color, var(--blog-accent));
+}
+    .blog-related__thumb img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+.blog-related__body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+.blog-related__name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    /* Başlık uzunluğu değişken; kartlar aynı boyda kalsın. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.blog-related__meta {
+    color: var(--blog-ink-soft);
+    font-size: 12px;
+}
+.blog-related__category {
+    align-self: flex-start;
+    margin-top: 2px;
+    padding: 2px 9px;
+    border-radius: 5px;
+    background: var(--blog-card-color, var(--blog-accent));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+}
+@media (max-width: 1279px) {
+    .blog-related {
+        position: static;
+        padding-top: 32px;
+        border-top: 1px solid var(--blog-line);
+    }
+    /* Geniş alanda tek sütun ray yerine ızgara daha iyi oturuyor. */
+    .blog-related__list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 14px;
+    }
+}
+@media (max-width: 767px) {
+    .blog-detail__title {
+        font-size: 26px;
+    }
+    .blog-detail__bar {
+        align-items: flex-start;
+    }
+}
