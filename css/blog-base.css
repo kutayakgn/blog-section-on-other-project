@@ -25,30 +25,37 @@
     background-size: cover;
     background-attachment: fixed;
 }
+
 .blog--blue {
     --blog-accent: var(--blog-blue);
     background-image: url("/blog/img/BG-blue.webp");
 }
+
 .blog--red {
     --blog-accent: var(--blog-red);
     background-image: url("/blog/img/BG-red.webp");
 }
+
 .blog--orange {
     --blog-accent: var(--blog-orange);
     background-image: url("/blog/img/BG-orange.webp");
 }
+
 .blog--lilac {
     --blog-accent: var(--blog-lilac);
     background-image: url("/blog/img/BG-lilac.webp");
 }
+
 .blog--purple {
     --blog-accent: var(--blog-purple);
     background-image: url("/blog/img/BG-purple.webp");
 }
+
 .blog--green {
     --blog-accent: var(--blog-green);
     background-image: url("/blog/img/BG-green.webp");
 }
+
 .blog-layout {
     display: grid;
     grid-template-columns: var(--blog-nav-width) minmax(0, 1fr);
@@ -57,15 +64,18 @@
     padding-left: 24px;
     transition: grid-template-columns .35s cubic-bezier(.22, .61, .36, 1);
 }
+
 .blog--nav-closed .blog-layout {
     grid-template-columns: var(--blog-nav-width-closed) minmax(0, 1fr);
 }
+
 .blog-main {
     grid-area: main;
     min-width: 0;
     padding-top: 28px;
     container-type: inline-size;
 }
+
 .blog-section-head {
     display: flex;
     align-items: flex-end;
@@ -76,6 +86,7 @@
     scroll-margin-top: 24px;
     max-width: calc(100vw - 390px);
 }
+
 .blog-page-title {
     margin: 0;
     font-size: 32px;
@@ -83,17 +94,20 @@
     font-weight: 500;
     color: #60646c;
 }
+
 .blog-page-count {
     margin: 4px 0 0;
     color: var(--blog-ink-soft);
     font-size: 14px;
 }
+
 .blog-page-note {
     margin: 2px 0 0;
     color: var(--blog-ink-soft);
     font-size: 13px;
     opacity: .8;
 }
+
 .blog-sort {
     position: relative;
     color: #000;
@@ -102,6 +116,7 @@
     font-family: "Red Hat Display";
     font-size: 16px;
 }
+
 .blog-sort__toggle {
     display: inline-flex;
     align-items: center;
@@ -114,17 +129,21 @@
     font-family: "Red Hat Display";
     font-size: 16px;
 }
+
     .blog-sort__toggle::-webkit-details-marker {
         display: none;
     }
+
     .blog-sort__toggle svg {
         width: 14px;
         height: 14px;
         transition: transform .2s ease;
     }
+
 .blog-sort[open] .blog-sort__toggle svg {
     transform: rotate(180deg);
 }
+
 .blog-sort__menu {
     position: absolute;
     top: calc(100% + 4px);
@@ -137,6 +156,7 @@
     background: #fff;
     box-shadow: 0 14px 35px rgba(20, 28, 40, .13);
 }
+
 .blog-sort__option {
     display: block;
     box-sizing: border-box;
@@ -151,26 +171,29 @@
     text-decoration: none;
     cursor: pointer;
 }
+
     .blog-sort__option:hover {
         background: #f2f4f7;
         color: var(--blog-accent);
     }
+
     .blog-sort__option.is-selected {
         color: var(--blog-accent);
         font-weight: 600;
     }
+
 .blog-empty {
     margin-top: 24px;
-    padding: 48px 24px;
-    border: 1px dashed var(--blog-line);
-    border-radius: var(--blog-radius);
-    background: rgba(255, 255, 255, .7);
+    background-color: transparent;
     color: var(--blog-ink-soft);
-    text-align: center;
+    text-align: start;
+    min-height: 380px;
 }
+
 .blog-nav-backdrop {
     display: none;
 }
+
 @media (min-width: 992px) {
     .blog-section-head,
     .blog--nav-closed .blog-section-head {
@@ -184,6 +207,7 @@
         max-width: 100%;
     }
 }
+
 @media (max-width: 991px) {
     html,
     .blog-layout {
@@ -197,18 +221,22 @@
         column-gap: 0;
         padding: 0 16px 56px;
     }
+
     .blog-main {
         padding-top: 20px;
     }
+
     .blog-section-head {
         box-sizing: border-box;
         width: 100%;
         max-width: 100%;
     }
+
     .blog-page-title {
         font-size: 24px;
         line-height: 32px;
     }
+
     .blog-nav-backdrop {
         position: fixed;
         inset: 64px 0 0;
@@ -221,6 +249,7 @@
         pointer-events: none;
         transition: opacity .3s ease, visibility 0s linear .3s;
     }
+
     .blog--mobile-nav-open .blog-nav-backdrop {
         opacity: 1;
         visibility: visible;
@@ -228,6 +257,7 @@
         transition-delay: 0s;
     }
 }
+
 @media (prefers-reduced-motion: reduce) {
     .blog-layout {
         transition: none;
