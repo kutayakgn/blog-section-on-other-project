@@ -5,6 +5,7 @@
     var DESKTOP_CLOSED_CLASS = "blog--nav-closed";
     var MOBILE_OPEN_CLASS = "blog--mobile-nav-open";
     var SEARCH_OPEN_CLASS = "blog--search-open";
+    var HEADER_SCROLLED_CLASS = "blog--header-scrolled";
     var MOBILE_QUERY = "(max-width: 991px)";
     var body = document.body;
     var desktopToggle = document.querySelector("[data-desktop-nav-toggle]");
@@ -78,27 +79,31 @@
             searchToggle && searchToggle.focus();
         });
     });
+    var scrollTicking = false;
+    var syncScrollState = function () {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+        body.classList.toggle(HEADER_SCROLLED_CLASS, scrollTop > 0);
+        if (scrollTopButton) {
+            scrollTopButton.hidden = scrollTop <= 80;
+        }
+        scrollTicking = false;
+    };
+
+    window.addEventListener("scroll", function () {
+        if (scrollTicking) { return; }
+        scrollTicking = true;
+        window.requestAnimationFrame(syncScrollState);
+    }, { passive: true });
+
+    syncScrollState();
+
     if (scrollTopButton) {
-        var scrollTicking = false;
-        var syncScrollTopButton = function () {
-            scrollTopButton.hidden = window.scrollY <= 80;
-            scrollTicking = false;
-        };
-
-        window.addEventListener("scroll", function () {
-            if (scrollTicking) { return; }
-            scrollTicking = true;
-            window.requestAnimationFrame(syncScrollTopButton);
-        }, { passive: true });
-
         scrollTopButton.addEventListener("click", function (event) {
             event.preventDefault();
             var reduceMotion = window.matchMedia
                 && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
         });
-
-        syncScrollTopButton();
     }
     document.addEventListener("keydown", function (event) {
         if (event.key !== "Escape") { return; }

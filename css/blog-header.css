@@ -7,9 +7,15 @@
     align-items: center;
     gap: 83px;
     padding: 40px 35px 45px 36px;
-    background: url(/blog/img/bg.png) top center no-repeat;
-    background-position: top;
+    background: transparent;
     background-size: cover;
+    box-shadow: none;
+    transition: background-color .2s ease, box-shadow .2s ease;
+}
+.blog--header-scrolled .blog-header {
+    background: url(/blog/img/bg.png) top center no-repeat;
+    background-size: cover;
+    box-shadow: 0 0 2px 0 #949494;
 }
 .blog-header__logo {
     flex: 0 0 auto;
