@@ -77,8 +77,24 @@
     .blog-footer__copyright i {
         font-style: normal;
     }
+@media (min-width: 992px) {
+    .blog-footer,
+    .blog--nav-closed .blog-footer {
+        grid-column: 1 / -1;
+        box-sizing: border-box;
+        width: auto;
+        max-width: none;
+        margin-left: -24px;
+        padding-right: 35px;
+        padding-left: 36px;
+        transition: none;
+    }
+}
 @media (max-width: 991px) {
     .blog-footer {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
         margin-top: 48px;
     }
     .blog-footer__row {
