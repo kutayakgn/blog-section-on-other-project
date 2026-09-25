@@ -193,6 +193,7 @@
 .blog-nav-backdrop {
     display: none;
 }
+
 .scrollTop {
     position: fixed;
     right: 45px;
@@ -201,37 +202,36 @@
     display: grid;
     place-items: center;
     box-sizing: border-box;
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     padding: 16px;
     border-radius: 12px;
     background: #004180;
     color: #fff;
+    font-size: 16px;
     line-height: 1;
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(0, 65, 128, .22);
 }
-.scrollTop:hover,
-.scrollTop:focus-visible {
-    background: #00366b;
-    color: #fff;
-}
-.scrollTop:focus-visible {
-    outline: 3px solid rgba(0, 65, 128, .28);
-    outline-offset: 3px;
-}
-.scrollTop.icon-Up-Arrow::before {
-    content: "";
-    width: 10px;
-    height: 10px;
-    border: solid currentColor;
-    border-width: 0 2px 2px 0;
-    font-family: inherit;
-    transform: translateY(3px) rotate(-135deg);
-}
-.scrollTop[hidden] {
-    display: none;
-}
+
+    .scrollTop:hover,
+    .scrollTop:focus-visible {
+        background: #00366b;
+        color: #fff;
+    }
+
+    .scrollTop:focus-visible {
+        outline: 3px solid rgba(0, 65, 128, .28);
+        outline-offset: 3px;
+    }
+
+    .scrollTop.icon-Up-Arrow::before {
+        width: 10px;
+        height: 10px;
+    }
+
+    .scrollTop[hidden] {
+        display: none;
+    }
 
 @media (min-width: 992px) {
     .blog-section-head,
