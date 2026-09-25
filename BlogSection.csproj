@@ -4,4 +4,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <!--
+    Gerçek Kentico 13 projesine taşınacak örnekler bu demo uygulamasında
+    derlenmez veya yayınlanmaz. Böylece transfer paketi mock projeyi etkilemez.
+  -->
+  <ItemGroup>
+    <Compile Remove="Kentico13Transfer\**\*.cs" />
+    <Content Remove="Kentico13Transfer\**\*" />
+    <None Remove="Kentico13Transfer\**\*" />
+    <None Include="Kentico13Transfer\**\*" />
+  </ItemGroup>
 </Project>

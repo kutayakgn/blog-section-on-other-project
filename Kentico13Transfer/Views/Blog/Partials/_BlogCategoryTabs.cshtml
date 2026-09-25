@@ -1,0 +1,22 @@
+@model YkbYapikredi.Web.Models.BlogPageViewModel
+
+@if (Model.HasCategoryTabs)
+{
+    <nav class="blog-category-tabs" aria-label="@($"{Model.Title} alt kategorileri")">
+        @foreach (var tab in Model.CategoryTabs)
+        {
+            if (tab.IsActive)
+            {
+                <span class="blog-category-tabs__item is-active" aria-current="page">
+                    @tab.Title
+                </span>
+            }
+            else
+            {
+                <a class="blog-category-tabs__item" href="@Url.Content(tab.Url)">
+                    @tab.Title
+                </a>
+            }
+        }
+    </nav>
+}

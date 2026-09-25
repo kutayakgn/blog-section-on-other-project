@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="~/css/blog.min.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="blog blog--@Model.AccentColor">
+<body id="blog-page-top" class="blog blog--@Model.AccentColor">
     @await Html.PartialAsync("~/Views/Blog/Partials/_BlogHeader.cshtml", Model)
 
     <div class="blog-layout">
@@ -32,6 +32,12 @@
 
         @await Html.PartialAsync("~/Views/Blog/Partials/_BlogFooter.cshtml")
     </div>
+
+    <a href="#blog-page-top"
+       class="scrollTop icon-Up-Arrow"
+       data-scroll-top
+       aria-label="Sayfanın En Üstüne Giden Buton"
+       hidden></a>
 
     <script src="~/js/blog.min.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

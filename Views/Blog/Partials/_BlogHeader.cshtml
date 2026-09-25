@@ -2,15 +2,6 @@
 @model YkbYapikredi.Web.Models.BlogLayoutViewModel
 
 <header class="blog-header">
-    <button type="button"
-            class="blog-header__menu"
-            data-mobile-nav-toggle
-            aria-expanded="false"
-            aria-controls="blog-navigation"
-            aria-label="Blog menüsünü aç">
-        <span aria-hidden="true"></span>
-    </button>
-
     <a class="blog-header__logo" href="/blog">
         <img src="~/assets/images/blog/ykb-blog-logo.png" alt="Yapı Kredi Blog" />
     </a>
@@ -25,8 +16,11 @@
     </button>
 
     <form id="blog-search-form" class="blog-search" method="get" action="@Model.BaseUrl" role="search">
-        <button type="button" class="blog-search__close" data-search-close aria-label="Aramayı kapat">
-            <span aria-hidden="true">×</span>
+        <button type="button" class="blog-search__close" data-search-close aria-label="Aramadan geri dön">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 12H5"></path>
+                <path d="m11 18-6-6 6-6"></path>
+            </svg>
         </button>
 
         <input type="search"
@@ -36,10 +30,20 @@
                placeholder="Blogda arayın"
                minlength="3"
                maxlength="50"
+               aria-describedby="blog-search-hint"
                aria-label="Blogda ara" />
 
         <button type="submit" class="blog-search__button" aria-label="Ara">
             @IconRenderer.Render("icon-Search")
         </button>
+
+        <button type="button" class="blog-search__dismiss" data-search-close aria-label="Aramayı kapat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                <path d="M6 6l12 12"></path>
+                <path d="M18 6 6 18"></path>
+            </svg>
+        </button>
+
+        <span id="blog-search-hint" class="blog-search__hint">Lütfen en az 3 karakter giriniz.</span>
     </form>
 </header>

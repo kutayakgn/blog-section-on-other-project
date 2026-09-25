@@ -11,8 +11,9 @@
     var mobileToggle = document.querySelector("[data-mobile-nav-toggle]");
     var mobileDismiss = document.querySelector("[data-mobile-nav-dismiss]");
     var searchToggle = document.querySelector("[data-search-toggle]");
-    var searchClose = document.querySelector("[data-search-close]");
+    var searchCloseButtons = document.querySelectorAll("[data-search-close]");
     var searchInput = document.querySelector(".blog-search__input");
+    var scrollTopButton = document.querySelector("[data-scroll-top]");
     var mobileMedia = window.matchMedia ? window.matchMedia(MOBILE_QUERY) : null;
     if (!body) { return; }
     try {
@@ -71,11 +72,33 @@
             setSearch(!body.classList.contains(SEARCH_OPEN_CLASS));
         });
     }
-    if (searchClose) {
+    Array.prototype.forEach.call(searchCloseButtons, function (searchClose) {
         searchClose.addEventListener("click", function () {
             setSearch(false);
             searchToggle && searchToggle.focus();
         });
+    });
+    if (scrollTopButton) {
+        var scrollTicking = false;
+        var syncScrollTopButton = function () {
+            scrollTopButton.hidden = window.scrollY <= 80;
+            scrollTicking = false;
+        };
+
+        window.addEventListener("scroll", function () {
+            if (scrollTicking) { return; }
+            scrollTicking = true;
+            window.requestAnimationFrame(syncScrollTopButton);
+        }, { passive: true });
+
+        scrollTopButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            var reduceMotion = window.matchMedia
+                && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+        });
+
+        syncScrollTopButton();
     }
     document.addEventListener("keydown", function (event) {
         if (event.key !== "Escape") { return; }

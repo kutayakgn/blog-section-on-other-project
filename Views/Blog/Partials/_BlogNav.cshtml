@@ -2,6 +2,15 @@
 @model YkbYapikredi.Web.Models.BlogNavViewModel
 
 <nav id="blog-navigation" class="blog-nav" aria-label="Blog kategorileri">
+    <button type="button"
+            class="blog-nav__mobile-toggle"
+            data-mobile-nav-toggle
+            aria-expanded="false"
+            aria-controls="blog-navigation"
+            aria-label="Blog menüsünü aç">
+        <span aria-hidden="true"></span>
+    </button>
+
     <div class="blog-nav__inner">
         <button type="button"
                 class="blog-nav__toggle"
