@@ -145,8 +145,9 @@ public sealed class BlogController : BaseController
         bool oldestFirst,
         CancellationToken cancellationToken)
     {
-        // Bu servis sorguyu DB tarafında PathTypeEnum.Section ile yapmalıdır.
-        // Böylece /blog/gelecek "Tümü" sekmesi alt kategorilerdeki yazıları da,
+        // Servisteki PathTypeEnum.Children sorgusu NestingLevel ile
+        // sınırlandırılmadığı için bütün torunları kapsar. Böylece
+        // /blog/gelecek "Tümü" sekmesi alt kategorilerdeki yazıları da,
         // /blog/gelecek/bilim ise yalnızca Bilim dalındaki yazıları getirir.
         var result = await articleService.GetPageAsync(
             aliasPath,

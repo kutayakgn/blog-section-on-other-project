@@ -8,8 +8,9 @@ projesindeki karşılıklarının yerine kopyalanmak üzere hazırlanmıştır.
 1. `Controllers/BlogController.cs`
 2. `Models/BlogPageViewModel.cs`
 3. `Models/BlogCategoryTabViewModel.cs`
-4. `Views/Blog/Partials/_BlogCategoryTabs.cshtml`
-5. `css/blog-category-tabs.css`
+4. `Services/BlogArticleService.cs`
+5. `Views/Blog/Partials/_BlogCategoryTabs.cshtml`
+6. `css/blog-category-tabs.css`
 
 `blog-category-tabs.css` dosyasını gerçek projedeki CSS minify/bundle girdilerine
 ekleyin. Üretilen `blog.min.css` dosyasını elle düzenlemeyin.
@@ -60,26 +61,22 @@ Beklenen yapı:
 - Kart kategorisi `Nav.FindCategory` ile bellekte bulunur; kart başına DB sorgusu
   yoktur.
 
-## IBlogArticleService için zorunlu kontrol
+## BlogArticleService davranışı
 
-`GetPageAsync(aliasPath, ...)` sorgusu makaleleri DB tarafında sayfalayarak ve
-`Path(aliasPath, PathTypeEnum.Section)` kullanarak çekmelidir. `Children` veya
-`NestingLevel(1)` kullanırsa `/blog/gelecek` alt kategorilerin içindeki makaleleri
-`Tümü` sekmesinde göremez.
+Mevcut servisteki `Path(aliasPath, PathTypeEnum.Children)` kullanımı doğrudur.
+`NestingLevel` verilmediği için sorgu yalnızca doğrudan çocuklarla sınırlanmaz;
+bütün alt seviyelerdeki makaleleri kapsar. Bu nedenle `/blog/gelecek` sorgusu
+Bilim, İnovasyon ve Teknoloji altındaki makaleleri birlikte getirir.
 
-Sorgunun en az şu davranışları göstermesi gerekir:
+Transfer paketindeki son servis ayrıca:
 
-```csharp
-query
-    .Path(aliasPath, PathTypeEnum.Section)
-    .OrderBy(oldestFirst ? "ArticlePublishDate" : "ArticlePublishDate DESC")
-    .Page(pageNumber - 1, pageSize);
-```
-
-Buradaki `ArticlePublishDate` örnektir; gerçek generated article sınıfındaki
-alan adı kullanılmalıdır. Tüm kayıtları `ToList()` ile alıp sonra `Skip/Take`
-yapmayın. `IBlogArticleService` implementasyonu paylaşıldığında bu bölüm gerçek
-alan adlarıyla birebir derlenebilir son hâle getirilebilir.
+- Sayfalama için Kentico `Page` metodunu kullanır; tüm makaleleri belleğe almaz.
+- Kart getirilen bütün sorgulara `WithPageUrlPaths()` ekler. Böylece `Map`
+  içindeki URL üretimi kart başına ek sorgu açmaz.
+- Arama sonuçlarını sabit `NodeLevel = 4` ve `NodeName` ile değil, doğrudan
+  `NodeAliasPath` ile eşler. Aynı isimli iki makale veya ağaç derinliği değişimi
+  yanlış kart döndürmez.
+- Kentico sorgularını MARS kısıtına uygun biçimde sıralı çalıştırır.
 
 ## Varsayımlar
 
