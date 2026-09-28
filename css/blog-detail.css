@@ -5,24 +5,29 @@
     tasarımın bozulmaması buradaki descendant kurallarına bağlı.
 */
 /*
-    İki sütun: yazı + sağda "İlginizi Çekebilir" rayı.
-    Canlı sitede yazı alanı calc(100vw - 615px) genişliğinde, ilgili yazılar da
-    ~445px'lik sağ rayda. Sabit piksel yerine ızgara kullanıyoruz: ray sabit,
-    yazı kalan alanı alıyor — dar ekranda ray alta iniyor.
+    İki sütun: yazı + sağda "İlginizi Çekebilir" rayı. Masaüstü yazı kolonu
+    canlı sitedeki açık/kapalı nav ölçülerini kullanır; dar ekranda ray alta iner.
 */
 .blog-detail-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
+    grid-template-columns: minmax(0, 1fr);
     gap: 48px;
     align-items: start;
 }
 .blog-detail {
-    /* Genişlik ızgaradan geliyor; ayrıca kısıtlamıyoruz. */
     min-width: 0;
+}
+@media (min-width: 1280px) {
+    .blog-detail-layout {
+        grid-template-columns: minmax(0, calc(100vw - 800px)) 340px;
+        transition: grid-template-columns .4s;
+    }
+    .blog--nav-closed .blog-detail-layout {
+        grid-template-columns: minmax(0, calc(100vw - 615px)) 340px;
+    }
 }
 @media (max-width: 1279px) {
     .blog-detail-layout {
-        grid-template-columns: minmax(0, 1fr);
         gap: 40px;
     }
 }
@@ -35,8 +40,9 @@
     margin: 0 0 14px;
     padding: 0;
     list-style: none;
-    font-size: 13.5px;
-    color: var(--blog-ink-soft);
+    color: #8c8f97;
+    font-size: 13px;
+    line-height: 21px;
 }
 .blog-crumbs li + li::before {
     content: "›";
@@ -44,7 +50,7 @@
     color: #b6bcc5;
 }
 .blog-crumbs a {
-    color: var(--blog-ink-soft);
+    color: #8c8f97;
     text-decoration: none;
 }
     .blog-crumbs a:hover {
@@ -52,11 +58,11 @@
         text-decoration: underline;
     }
 .blog-detail__title {
-    margin: 0 0 18px;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1.22;
-    letter-spacing: -.6px;
+    margin: 0 0 24px;
+    color: #60646c;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
 }
 .blog-detail__bar {
     display: flex;
@@ -85,15 +91,6 @@
         width: 15px;
         height: 15px;
     }
-.blog-detail__category {
-    padding: 4px 12px;
-    border-radius: 6px;
-    background: var(--blog-card-color, var(--blog-accent));
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-}
 .blog-detail__tools {
     display: flex;
     align-items: center;
@@ -106,7 +103,7 @@
     overflow: hidden;
     border: 1px solid var(--blog-line);
     border-radius: 8px;
-    background: var(--blog-surface);
+    background: transparent;
 }
     .blog-fontsize button {
         padding: 6px 12px;
@@ -139,7 +136,7 @@
     padding: 7px 14px;
     border: 1px solid var(--blog-line);
     border-radius: 8px;
-    background: var(--blog-surface);
+    background: transparent;
     color: var(--blog-ink);
     font: inherit;
     font-size: 13.5px;
@@ -222,9 +219,9 @@
     }
 /* ---------- Serbest gövde ---------- */
 .blog-detail__text {
-    font-size: 16.5px;
-    line-height: 1.78;
-    color: #23272e;
+    color: #60646c;
+    font-size: 16px;
+    line-height: 24px;
 }
     /* Yazı boyutu düğmeleri bu iki sınıfı ekler. */
     .blog-detail__text.is-size-sm {
@@ -246,7 +243,9 @@
         font-weight: 700;
     }
     .blog-detail__text h2 {
-        font-size: 1.32em;
+        color: #60646c;
+        font-size: 18px;
+        font-weight: 700;
     }
     .blog-detail__text h3 {
         font-size: 1.15em;
@@ -439,10 +438,13 @@
     }
 }
 @media (max-width: 767px) {
-    .blog-detail__title {
-        font-size: 26px;
-    }
     .blog-detail__bar {
         align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .blog-detail-layout {
+        transition: none;
     }
 }
