@@ -35,6 +35,13 @@
         gap: 40px;
     }
 }
+
+@media (min-width: 992px) and (max-width: 1279px) {
+    .blog-detail-layout,
+    .blog--nav-closed .blog-detail-layout {
+        margin-right: var(--blog-desktop-content-right);
+    }
+}
 /* Kırıntı yolu */
 .blog-crumbs ol {
     display: flex;
@@ -414,9 +421,24 @@
     }
 /* ---------- İlginizi Çekebilir (sağ ray) ---------- */
 .blog-related {
-    /* Uzun yazılarda ray ekranda kalsın. */
-    position: sticky;
-    top: 24px;
+    position: static;
+}
+
+@media (min-width: 1280px) {
+    .blog-related {
+        /* Sağ ray, sabit header ve masaüstü navigasyonuyla aynı hizada kalır. */
+        position: sticky;
+        top: 151px;
+        align-self: start;
+        max-height: calc(100vh - 175px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: none;
+    }
+
+    .blog-related::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .blog-related__title {
