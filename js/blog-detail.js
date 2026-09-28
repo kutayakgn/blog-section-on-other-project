@@ -7,23 +7,44 @@
     /* ---------- Paylaşım ---------- */
     var share = document.querySelector("[data-share]");
     if (share) {
-        var toggle = share.querySelector(".blog-share__toggle");
+        var popupLinks = share.querySelectorAll("[data-share-popup]");
         var copy = share.querySelector("[data-share-copy]");
-        if (toggle) {
-            toggle.addEventListener("click", function () {
-                var url = share.getAttribute("data-share-url");
-                var title = share.getAttribute("data-share-title");
-                // Destekleyen cihazda işletim sisteminin paylaşım ekranı açılır.
-                if (navigator.share) {
-                    navigator.share({ title: title, url: url }).catch(function () {
-                        // Kullanıcı vazgeçti; yapılacak bir şey yok.
-                    });
-                    return;
+
+        Array.prototype.forEach.call(popupLinks, function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                var width = 640;
+                var height = 520;
+                var screenLeft = window.screenX || window.screenLeft || 0;
+                var screenTop = window.screenY || window.screenTop || 0;
+                var left = Math.max(0, screenLeft + (window.outerWidth - width) / 2);
+                var top = Math.max(0, screenTop + (window.outerHeight - height) / 2);
+                var platform = link.getAttribute("data-share-popup") || "platform";
+                var features = [
+                    "popup=yes",
+                    "width=" + width,
+                    "height=" + height,
+                    "left=" + Math.round(left),
+                    "top=" + Math.round(top),
+                    "resizable=yes",
+                    "scrollbars=yes",
+                    "toolbar=no",
+                    "menubar=no",
+                    "status=no"
+                ].join(",");
+
+                var popup = window.open(
+                    link.href,
+                    "ykbBlogShare_" + platform,
+                    features);
+
+                if (popup) {
+                    popup.focus();
                 }
-                var open = share.classList.toggle("is-open");
-                toggle.setAttribute("aria-expanded", open ? "true" : "false");
             });
-        }
+        });
+
         if (copy) {
             copy.addEventListener("click", function () {
                 var url = share.getAttribute("data-share-url");
@@ -45,15 +66,6 @@
                 document.body.removeChild(field);
             });
         }
-        // Dışarı tıklayınca liste kapansın.
-        document.addEventListener("click", function (event) {
-            if (!share.contains(event.target)) {
-                share.classList.remove("is-open");
-                if (toggle) {
-                    toggle.setAttribute("aria-expanded", "false");
-                }
-            }
-        });
     }
     /* ---------- Yazı boyutu ---------- */
     var text = document.querySelector("[data-article-text]");
